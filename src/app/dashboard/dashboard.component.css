@@ -1,5 +1,5 @@
 .dashboard-container {
-  padding-top: 70px; /* cria espaço para o menu fixo */
+  /* padding-top removed - global .app-root-main provides top padding for fixed navbar */
 }
 
 h2 {

@@ -47,7 +47,8 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.dashboardservice.getVehicles().subscribe((res) => {
       // API may return an object { vehicles: [...] } or an array [...]
-      console.log('getVehicles response:', res);
+      // log at debug level to avoid noisy console output during normal app usage
+      console.debug('getVehicles response:', res);
       if (res && (res as any).vehicles) {
         this.vehicles = (res as any).vehicles as Veiculo[];
       } else if (Array.isArray(res)) {

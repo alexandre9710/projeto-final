@@ -1,42 +1,174 @@
-.imagem{
-margin-top: 10% ;
-display: flex;
-justify-content: center;
- position: relative;
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+
+main > div { 
+    display: block; 
+    text-align: center; 
 }
 
-.home-card{
-	position: absolute;
-	top: 0%;
-	left: 50%;
-	transform: translateX(-50%);
-	background: rgba(255,255,255,0.75);
-	padding: 32px 36px;
-	border-radius: 8px;
-	box-shadow: 0 10px 30px rgba(0,0,0,0.18);
-	text-align: left;
-	width: 30vw;
-	max-width: 720px;
-	aspect-ratio: 1 / 1;
-	border: 1px solid rgba(0,0,0,0.22);
-	backdrop-filter: blur(4px);
-	z-index: 10;
+
+body {
+    background: #FFFFFF;
+    height: 100%;
+    font-family: 'Roboto', sans-serif;
 }
 
-.home-card-header{
-	font-size: 0.9rem;
-	color: #222;
-	margin-bottom: 12px;
-	font-weight: 600;
+html {
+    height: 100%;
 }
 
-.home-card-body{
-	margin-top: 6px;
+div#carousel {
+    height: 46vh;
+    width: 100%;
+     max-height: 628px;
+    -webkit-transition: all .3s ease-in-out;
+    -moz-transition: all .3s ease-in-out;
+    transition: all .3s ease-in-out;
 }
 
-.home-welcome{
-	color: #0d6efd;
-	font-weight: 600;
-	text-decoration: underline;
-	font-size: 0.95rem;
+div#carousel-title a {
+    text-decoration: none;
+}
+
+div#carousel-title  {
+    display: block;
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+header ul {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+ul {
+	display: inline-block;
+}
+
+header {
+    background: #FFFFFF;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+
+header div {
+    display: inline;
+    vertical-align: middle;
+}
+
+header nav {
+    display: inline-block;
+    vertical-align: middle;
+    width: 80vw;
+}
+
+header nav a {
+    color: #1351d8;
+    font-size: 20px;
+    text-decoration: none;
+    font-weight: 900;
+    margin-left: 14px;
+    margin-right: 14px;
+}
+
+header nav a:hover {
+    color: #1b357e;
+    text-decoration: none;
+    font-weight: 900;
+}
+
+nav li {
+    display: inline;
+    list-style: none;
+}
+
+main {
+    min-height: calc(100% - 167px);
+}
+
+nav#social {
+    display: inline;
+    width: 80%;
+}
+
+nav#social ul img {
+    width: 28px;
+}
+
+span.redesociais {
+    color: #ffffff;
+    vertical-align: super;
+}
+
+footer {
+    background: #1B357E;
+    padding: 20px;
+}
+
+footer div {
+    display: inline;
+    float: right;
+    margin-right: 40px;
+}
+
+button:hover {
+    background: #1b357e;
+}
+button {
+    background: #1351d8;
+    color: #fff;
+    border: 0px;
+    border-radius: 10px;
+}
+
+
+#carousel.carousel-slot {
+  width: 100%;
+  max-width: 920px; 
+  margin: 0 auto;
+  height: 420px; 
+  position: relative;
+}
+
+#carousel .carousel-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; 
+  display: block;
+}
+
+
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.45);
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+  z-index: 10;
+  font-size: 1.2rem;
+  user-select: none;
+}
+
+.carousel-btn.prev { left: 10px; }
+.carousel-btn.next { right: 10px; }
+
+.carousel-btn:focus { outline: 2px solid rgba(255,255,255,0.5); }
+
+@media (max-width: 768px) {
+  #carousel.carousel-slot { max-width: 100%; height: 320px; }
+}
+
+@media (max-width: 480px) {
+  #carousel.carousel-slot { height: 240px; }
+  .carousel-btn { padding: 6px 8px; font-size: 1rem; }
+  .carousel-btn.prev { left: 6px; }
+  .carousel-btn.next { right: 6px; }
 }
