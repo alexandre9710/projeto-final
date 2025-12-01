@@ -1,5 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
-
+/* Fonts are provided globally in index.html */
 main > div { 
     display: block; 
     text-align: center; 
@@ -7,7 +6,7 @@ main > div {
 
 
 body {
-    background: #FFFFFF;
+    background: #ffffff;
     height: 100%;
     font-family: 'Roboto', sans-serif;
 }

@@ -38,7 +38,7 @@ export class LancamentoComponent {
       potencia: 160,
       volumeCacamba: 1420,
       roda: 'Aço Estampado 16',
-      image: '/XL Cabine.jpg'
+      image: '/xl-cabine.jpg'
     },
     {
       id: 2,
@@ -52,7 +52,7 @@ export class LancamentoComponent {
       potencia: 160,
       volumeCacamba: 1180,
       roda: 'Aço Estampado 16',
-      image: '/xls 2.2 diesel.jpg'
+      image: '/xls-2-2-diesel.jpg'
     },
     {
       id: 3,
