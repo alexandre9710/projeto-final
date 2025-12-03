@@ -12,10 +12,7 @@
         <ng-container *ngIf="items && items.length; else empty">
             <img class="carousel-img" [src]="items[currentIndex].image" [alt]="items[currentIndex].title"/>
 
-            <div class="carousel-caption" role="region" aria-live="polite">
-                <a *ngIf="items[currentIndex].url.startsWith('/')" [routerLink]="items[currentIndex].url" class="caption-link">{{ items[currentIndex].title }}</a>
-                <a *ngIf="!items[currentIndex].url.startsWith('/')" [attr.href]="items[currentIndex].url || '#'" class="caption-link">{{ items[currentIndex].title }}</a>
-            </div>
+            <!-- caption overlay removed (we show the active title below the carousel instead) -->
 
             <button class="carousel-btn prev" (click)="prev()" aria-label="Previous">◀</button>
             <button class="carousel-btn next" (click)="next()" aria-label="Next">▶</button>
@@ -25,6 +22,7 @@
             </ng-template>
         </div>
 
+    <!-- title shown below the carousel (single visible caption) -->
     <div id="carousel-title">
         <ng-container *ngIf="items && items.length; else emptyTitle">
             <ng-container *ngIf="items[currentIndex].url.startsWith('/') ; else externalLink">

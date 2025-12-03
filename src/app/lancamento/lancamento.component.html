@@ -40,6 +40,7 @@
     <div class="controls" style="text-align:center; padding-bottom:20px;">
       <button type="button" class="btn-compare" (click)="showCompare()">Comparar Carros</button>
       <button type="button" class="btn-clear" (click)="clearSelection()">Limpar seleção</button>
+      <div *ngIf="compareMessage" class="compare-message" style="margin-top:8px;color:#b00020;font-weight:600">{{ compareMessage }}</div>
     </div>
   </section>
 

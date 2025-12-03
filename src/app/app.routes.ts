@@ -17,7 +17,7 @@ export const routes: Routes = [
     {path:'lancamento', component: LancamentoComponent, canActivate: [authGuard]},
 
     // Contato should be public — remove the authGuard so anyone can view the contact page
-    {path:'contato', component: ContatoComponent},
+    {path:'contato', component: ContatoComponent, canActivate: [authGuard]},
 
-    {path:'dashboard', component: DashboardComponent, canActivate: [authGuard]}
+    {path:'dashboard', component: DashboardComponent, canActivate: [authGuard]},
 ];

@@ -22,7 +22,7 @@ export interface Car {
   standalone: true,
   imports: [CommonModule, MenuComponent],
   templateUrl: './lancamento.component.html',
-  styleUrls: ['./lancamento.component.style.css', './lancamento.component.reset.css', './lançamento.component.css']
+  styleUrls: ['./lancamento.component.css']
 })
 export class LancamentoComponent {
   cars: Car[] = [
@@ -72,6 +72,7 @@ export class LancamentoComponent {
 
   selected: number[] = [];
   compareOpen = false;
+  compareMessage: string | null = null;
 
   toggleSelection(idx: number) {
     const i = this.selected.indexOf(idx);
@@ -91,11 +92,26 @@ export class LancamentoComponent {
   }
 
   showCompare() {
+    // require exactly two selected items
     if (this.selected.length < 2) {
-      // do nothing or show a message in future
+      this.compareMessage = 'Selecione dois carros para comparar.';
+      // clear message after a short delay
+      setTimeout(() => (this.compareMessage = null), 2500);
       return;
     }
+
+    this.compareMessage = null;
     this.compareOpen = true;
+
+    // Scroll compare card into view (use setTimeout so DOM updates first)
+    setTimeout(() => {
+      try {
+        const el = document.querySelector('.compare-card') as HTMLElement | null;
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } catch (e) {
+        // ignore environment without DOM
+      }
+    }, 0);
   }
 
   hideCompare() {
