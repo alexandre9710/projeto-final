@@ -1,43 +1,139 @@
 .principal {
   display: flex;
-}
-.img {
-  width: auto;
   height: 100vh;
+  width: 100%;
+  background-color: #fff;
+}
+
+/* LADO ESQUERDO - IMAGEM */
+.container-left {
+  flex: 1;
   display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+}
+
+.img img {
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain;
+}
+
+/* LADO DIREITO - LOGIN/CADASTRO */
+.container-right {
+  flex: 1;
+  background-color: #f2f2f2;
+  display: flex;
+  justify-content: center;
   align-items: center;
 }
-.container-right {
-  height: 100vh;
-  width: 500px;
-  background-color: #f2f2f2;
-  position: absolute;
-  right: 0;
-}
+
+/* CONTEÚDO DO LOGIN */
 .login-container {
-  height: 100vh;
+  width: 80%;
+  max-width: 450px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
 }
+
+/* LOGO FORD */
 .login-logo img {
-  width: 280px;
+  width: 250px;
   margin: 10px 0;
 }
+
+/* ABAS LOGIN / CADASTRO */
+.tabs {
+  display: flex;
+  width: 100%;
+  justify-content: space-evenly;
+  margin-bottom: 15px;
+}
+
+.tabs button {
+  width: 50%;
+  padding: 12px;
+  background: #ddd;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.tabs .active {
+  background: #003399;
+  color: white;
+}
+
+/* FORMULÁRIOS */
 .login {
   width: 100%;
   padding: 0 2rem;
 }
+
 .login-title {
   text-align: center;
   margin: 1rem 0;
   color: black;
 }
+
 .login-form {
   display: flex;
   flex-direction: column;
 }
+
+/* BOTÃO ERRO LOGIN */
+button.erro {
+  background-color: red !important;
+  color: white !important;
+  transition: 0.3s;
+}
+
+.msg-erro {
+  margin-top: 10px;
+  color: red;
+  font-size: 14px;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* TEXTO LEGAL */
+.info-legal {
+  font-size: 12px;
+  margin-top: 10px;
+  color: #555;
+}
+
+/* CHECKBOX */
+.checkbox {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.checkbox input {
+  margin-right: 5px;
+}
+
+/* COPYRIGHT */
 .copyright {
-  margin: 1rem 0;
+  margin-top: 20px;
+  font-size: 12px;
+  color: #333;
+  text-align: center;
+}
+
+/* RESPONSIVO - CELULAR */
+@media (max-width: 900px) {
+  .principal {
+    flex-direction: column;
+  }
+
+  .container-left {
+    display: none;
+  }
+
+  .container-right {
+    width: 100%;
+  }
 }

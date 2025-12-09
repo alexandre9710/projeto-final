@@ -20,7 +20,7 @@ export interface CarouselItem {
 })
 export class HomeComponent implements AfterViewInit, OnDestroy {
   items: CarouselItem[] = [
-    { image: '/imagem_1.jpg', title: 'Esta é a nova Ranger Ford 2022. Verifique novidades.', url: '/lancamento' },
+    { image: '/imagem_1.jpg', title: 'Esta é a nova Ranger Ford 2022. Clique aqui e vá para o lançamento.', url: '/lancamento' },
     { image: '/imagem_2.jpg', title: 'Ford — a nossa história', url: '/lancamento' },
     { image: '/imagem_3.jpg', title: 'Nova Ford Bronco Sport 2022', url: '/lancamento' }
   ];

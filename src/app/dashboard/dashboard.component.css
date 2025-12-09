@@ -1,27 +1,86 @@
-.dashboard-container {
-  /* padding-top removed - global .app-root-main provides top padding for fixed navbar */
+.principal {
+  display: flex;
+  height: 100vh;
 }
 
-h2 {
-  color: #0d6efd;
-  font-weight: 700;
+.container-left {
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #e5e5e5;
 }
 
-.card {
-  border-radius: 10px;
+.img img {
+  width: 80%;
 }
 
-.card-header {
-  background-color: #f8f9fa;
-  color: #0d6efd;
-  font-weight: 600;
+.container-right {
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.table-dark th {
-  background-color: #003366 !important;
-  color: white !important;
+.login-container {
+  width: 70%;
+  padding: 32px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
 }
 
-.table-primary {
-  background-color: #e6f0ff !important;
+.login-logo img {
+  width: 140px;
+  display: block;
+  margin: 0 auto 20px auto;
+}
+
+.tabs {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.tabs button {
+  background: none;
+  border: none;
+  padding: 12px 20px;
+  font-size: 18px;
+  cursor: pointer;
+  opacity: 0.6;
+}
+
+.tabs .active {
+  border-bottom: 3px solid #004aad;
+  opacity: 1;
+}
+
+.form input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.btn-login, .btn-cadastro {
+  width: 100%;
+  padding: 14px;
+  background: #004aad;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 17px;
+  cursor: pointer;
+}
+
+.btn-login.erro {
+  background: red !important;
+}
+
+.msg-erro {
+  margin-top: 10px;
+  color: red;
+  text-align: center;
 }
