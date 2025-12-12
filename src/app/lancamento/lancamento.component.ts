@@ -81,7 +81,7 @@ export class LancamentoComponent {
     } else {
       if (this.selected.length < 2) this.selected.push(idx);
       else {
-        // If already two selected, replace the second
+        // Se já houver dois selecionados, substitui o segundo
         this.selected[1] = idx;
       }
     }
@@ -92,10 +92,10 @@ export class LancamentoComponent {
   }
 
   showCompare() {
-    // require exactly two selected items
+    // Requer exatamente dois itens selecionados
     if (this.selected.length < 2) {
       this.compareMessage = 'Selecione dois carros para comparar.';
-      // clear message after a short delay
+      // Limpa a mensagem após um pequeno atraso
       setTimeout(() => (this.compareMessage = null), 2500);
       return;
     }
@@ -103,13 +103,13 @@ export class LancamentoComponent {
     this.compareMessage = null;
     this.compareOpen = true;
 
-    // Scroll compare card into view (use setTimeout so DOM updates first)
+    // Rola o cartão de comparação para a visualização
     setTimeout(() => {
       try {
         const el = document.querySelector('.compare-card') as HTMLElement | null;
         if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
       } catch (e) {
-        // ignore environment without DOM
+        // Ignora ambiente sem DOM
       }
     }, 0);
   }
@@ -124,6 +124,7 @@ export class LancamentoComponent {
   }
 
   formatCurrency(value: number) {
+    // Formatação de moeda BRL
     return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   }
 }

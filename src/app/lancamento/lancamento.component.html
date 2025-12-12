@@ -47,76 +47,76 @@
   <section class="compare" *ngIf="compareOpen">
     <div class="compare-card">
       <h3 style="text-align:center; margin-bottom: 10px;">Comparação</h3>
-      <table>
-        <tbody>
-          <tr>
-            <td></td>
-            <td *ngIf="selected[0] !== undefined">
-              <img [src]="cars[selected[0]].image" style="width:120px;" />
-            </td>
-            <td *ngIf="selected[1] !== undefined">
-              <img [src]="cars[selected[1]].image" style="width:120px;" />
-            </td>
-          </tr>
-          <tr>
-            <td>Modelo</td>
-            <td *ngIf="selected[0] !== undefined">{{ cars[selected[0]].model }}</td>
-            <td *ngIf="selected[1] !== undefined">{{ cars[selected[1]].model }}</td>
-          </tr>
-          <tr>
-            <td>Altura da caçamba (mm)</td>
-            <td *ngIf="selected[0] !== undefined">{{ cars[selected[0]].alturaCacamba }}</td>
-            <td *ngIf="selected[1] !== undefined">{{ cars[selected[1]].alturaCacamba }}</td>
-          </tr>
-          <tr>
-            <td>Altura do veículo (mm)</td>
-            <td *ngIf="selected[0] !== undefined">{{ cars[selected[0]].alturaVeiculo }}</td>
-            <td *ngIf="selected[1] !== undefined">{{ cars[selected[1]].alturaVeiculo }}</td>
-          </tr>
-          <tr>
-            <td>Altura livre do solo (mm)</td>
-            <td *ngIf="selected[0] !== undefined">{{ cars[selected[0]].alturaSolo }}</td>
-            <td *ngIf="selected[1] !== undefined">{{ cars[selected[1]].alturaSolo }}</td>
-          </tr>
-          <tr>
-            <td>Capacidade de carga (Kg)</td>
-            <td *ngIf="selected[0] !== undefined">{{ cars[selected[0]].capacidadeCarga }}</td>
-            <td *ngIf="selected[1] !== undefined">{{ cars[selected[1]].capacidadeCarga }}</td>
-          </tr>
-          <tr>
-            <td>Motor</td>
-            <td *ngIf="selected[0] !== undefined">{{ cars[selected[0]].motor }}</td>
-            <td *ngIf="selected[1] !== undefined">{{ cars[selected[1]].motor }}</td>
-          </tr>
-          <tr>
-            <td>Potência (cv)</td>
-            <td *ngIf="selected[0] !== undefined">{{ cars[selected[0]].potencia }}</td>
-            <td *ngIf="selected[1] !== undefined">{{ cars[selected[1]].potencia }}</td>
-          </tr>
-          <tr>
-            <td>Volume de caçamba (L)</td>
-            <td *ngIf="selected[0] !== undefined">{{ cars[selected[0]].volumeCacamba }}</td>
-            <td *ngIf="selected[1] !== undefined">{{ cars[selected[1]].volumeCacamba }}</td>
-          </tr>
-          <tr>
-            <td>Roda</td>
-            <td *ngIf="selected[0] !== undefined">{{ cars[selected[0]].roda }}</td>
-            <td *ngIf="selected[1] !== undefined">{{ cars[selected[1]].roda }}</td>
-          </tr>
-          <tr>
-            <td>Preço</td>
-            <td *ngIf="selected[0] !== undefined">{{ formatCurrency(cars[selected[0]].price) }}</td>
-            <td *ngIf="selected[1] !== undefined">{{ formatCurrency(cars[selected[1]].price) }}</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="compare-table-container">
+        <table>
+          <tbody>
+            <tr>
+              <td></td>
+              <td *ngIf="selected[0] !== undefined" class="car-image-cell">
+                <img [src]="cars[selected[0]].image" style="width:120px;" alt="{{ cars[selected[0]].model }}" />
+              </td>
+              <td *ngIf="selected[1] !== undefined" class="car-image-cell">
+                <img [src]="cars[selected[1]].image" style="width:120px;" alt="{{ cars[selected[1]].model }}" />
+              </td>
+            </tr>
+            <tr>
+              <td>Modelo</td>
+              <td *ngIf="selected[0] !== undefined">{{ cars[selected[0]].model }}</td>
+              <td *ngIf="selected[1] !== undefined">{{ cars[selected[1]].model }}</td>
+            </tr>
+            <tr>
+              <td>Altura da caçamba (mm)</td>
+              <td *ngIf="selected[0] !== undefined">{{ cars[selected[0]].alturaCacamba }}</td>
+              <td *ngIf="selected[1] !== undefined">{{ cars[selected[1]].alturaCacamba }}</td>
+            </tr>
+            <tr>
+              <td>Altura do veículo (mm)</td>
+              <td *ngIf="selected[0] !== undefined">{{ cars[selected[0]].alturaVeiculo }}</td>
+              <td *ngIf="selected[1] !== undefined">{{ cars[selected[1]].alturaVeiculo }}</td>
+            </tr>
+            <tr>
+              <td>Altura livre do solo (mm)</td>
+              <td *ngIf="selected[0] !== undefined">{{ cars[selected[0]].alturaSolo }}</td>
+              <td *ngIf="selected[1] !== undefined">{{ cars[selected[1]].alturaSolo }}</td>
+            </tr>
+            <tr>
+              <td>Capacidade de carga (Kg)</td>
+              <td *ngIf="selected[0] !== undefined">{{ cars[selected[0]].capacidadeCarga }}</td>
+              <td *ngIf="selected[1] !== undefined">{{ cars[selected[1]].capacidadeCarga }}</td>
+            </tr>
+            <tr>
+              <td>Motor</td>
+              <td *ngIf="selected[0] !== undefined">{{ cars[selected[0]].motor }}</td>
+              <td *ngIf="selected[1] !== undefined">{{ cars[selected[1]].motor }}</td>
+            </tr>
+            <tr>
+              <td>Potência (cv)</td>
+              <td *ngIf="selected[0] !== undefined">{{ cars[selected[0]].potencia }}</td>
+              <td *ngIf="selected[1] !== undefined">{{ cars[selected[1]].potencia }}</td>
+            </tr>
+            <tr>
+              <td>Volume de caçamba (L)</td>
+              <td *ngIf="selected[0] !== undefined">{{ cars[selected[0]].volumeCacamba }}</td>
+              <td *ngIf="selected[1] !== undefined">{{ cars[selected[1]].volumeCacamba }}</td>
+            </tr>
+            <tr>
+              <td>Roda</td>
+              <td *ngIf="selected[0] !== undefined">{{ cars[selected[0]].roda }}</td>
+              <td *ngIf="selected[1] !== undefined">{{ cars[selected[1]].roda }}</td>
+            </tr>
+            <tr>
+              <td>Preço</td>
+              <td *ngIf="selected[0] !== undefined">{{ formatCurrency(cars[selected[0]].price) }}</td>
+              <td *ngIf="selected[1] !== undefined">{{ formatCurrency(cars[selected[1]].price) }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
       <div style="text-align:center; margin-top: 12px;">
-        <button (click)="hideCompare()" style="height:40px; width:200px; margin-right: 8px;">Fechar</button>
-        <button (click)="clearSelection()" style="height:40px; width:200px;">Fechar e limpar</button>
+        <button (click)="hideCompare()" style="height:40px; width:48%; max-width: 200px; margin-right: 2%;">Fechar</button>
+        <button (click)="clearSelection()" style="height:40px; width:48%; max-width: 200px;">Fechar e limpar</button>
       </div>
     </div>
   </section>
 </main>
-
-<!-- Footer now rendered globally via FooterComponent -->

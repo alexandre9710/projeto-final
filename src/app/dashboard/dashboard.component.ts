@@ -1,24 +1,24 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { Subscription, of } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map, switchMap } from 'rxjs/operators';
+import { RouterLink } from '@angular/router';
+
 import { DashboardService } from '../services/dashboard.service';
 import { Veiculo } from '../models/veiculo.model';
 import { VehicleData } from '../models/vehicleData.model';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
 import { CarroVin } from '../utils/carroVinInterface';
-import { Subscription, of } from 'rxjs';
-import { debounceTime, distinctUntilChanged, filter, map, switchMap } from 'rxjs/operators';
-import { RouterLink } from '@angular/router';
-import { MenuComponent } from "../menu/menu.component";
+import { MenuComponent } from '../menu/menu.component';
 
 @Component({
   standalone: true,
   selector: 'app-dashboard',
   imports: [CommonModule, ReactiveFormsModule, MenuComponent, RouterLink],
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  styleUrls: ['./dashboard.component.css'],
 })
 export class DashboardComponent implements OnInit, OnDestroy {
-
   vehicles: Veiculo[] = [];
   selectedVehicle!: Veiculo;
   vehicleData!: VehicleData;
@@ -31,7 +31,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     '2FRHDUYS2Y63NHD22454': 'assets/ranger.png',
     '2RFAASDY54E4HDU34874': 'assets/mustang.png',
     '2FRHDUYS2Y63NHD22455': 'assets/territory.png',
-    '2RFAASDY54E4HDU34875': 'assets/bronco.png'
+    '2RFAASDY54E4HDU34875': 'assets/bronco.png',
   };
 
   imgByVin: string | null = null;
@@ -47,27 +47,37 @@ export class DashboardComponent implements OnInit, OnDestroy {
   constructor(private dashboardservice: DashboardService) {}
 
   ngOnInit(): void {
+    this.loadVehicles();
+    this.setupVehicleSelectionListener();
+    this.setupVinSearchListener();
+  }
+
+  private loadVehicles(): void {
     // Carrega veículos
     const vSub = this.dashboardservice.getVehicles().subscribe({
       next: (res: any) => {
         console.debug('getVehicles response', res);
+        let receivedVehicles: Veiculo[] = [];
+
         if (res && (res as any).vehicles) {
-          this.vehicles = (res as any).vehicles as Veiculo[];
+          receivedVehicles = (res as any).vehicles as Veiculo[];
         } else if (Array.isArray(res)) {
-          this.vehicles = res as Veiculo[];
-        } else {
-          this.vehicles = [];
+          receivedVehicles = res as Veiculo[];
         }
+
+        this.vehicles = receivedVehicles;
 
         if (this.vehicles.length > 0) {
           this.selectedVehicle = this.vehicles[0];
           this.selectCarForms.controls.carId.setValue(String(this.selectedVehicle.id));
         }
       },
-      error: (err) => console.error('Erro getVehicles', err)
+      error: (err) => console.error('Erro getVehicles', err),
     });
     this.subs.add(vSub);
+  }
 
+  private setupVehicleSelectionListener(): void {
     // Quando mudar select de veículo
     const selSub = this.selectCarForms.controls.carId.valueChanges.subscribe((id) => {
       if (!id) {
@@ -80,7 +90,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
       }
     });
     this.subs.add(selSub);
+  }
 
+  private setupVinSearchListener(): void {
     // Observa VIN com debounce para não chamar backend a cada tecla
     const vinValueObs = this.vinForm.controls.vin.valueChanges.pipe(
       map(v => (v || '').toString().trim()),
@@ -90,7 +102,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     const vinSub = vinValueObs.pipe(
       switchMap((vin: string) => {
-        // limpa dados quando vin vazio
+        // 1. Limpa dados quando vin vazio
         if (!vin) {
           this.imgByVin = null;
           this.carVin = null;
@@ -98,7 +110,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
           return of(null);
         }
 
-        // se temos imagem local, já define (não espera backend)
+        // 2. Define imagem local (se houver)
         if (this.vinImages[vin]) {
           this.imgByVin = this.vinImages[vin];
           console.debug('Imagem pelo VIN encontrada localmente:', this.imgByVin);
@@ -107,7 +119,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
           console.debug('VIN não mapeado localmente:', vin);
         }
 
-        // chama o backend para dados do VIN
+        // 3. Chama o backend para dados do VIN
         return this.dashboardservice.buscarVin(vin);
       })
     ).subscribe({
@@ -115,9 +127,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
         if (res) {
           this.carVin = res as CarroVin;
           console.debug('buscarVin result:', res);
-        } else {
-          // res null significa que houve limpeza por vin vazio
         }
+        // Se res for null, é porque o switchMap retornou of(null)
       },
       error: (err) => {
         console.error('Erro ao buscar VIN:', err);
@@ -128,7 +139,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.subs.add(vinSub);
   }
 
-  onImgError(event: Event) {
+  onImgError(event: Event): void {
     // se imagem falhar em carregar (404), zera imgByVin para não mostrar broken image
     console.warn('Erro ao carregar imagem', event);
     this.imgByVin = null;

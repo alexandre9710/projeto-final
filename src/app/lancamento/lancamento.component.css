@@ -30,30 +30,74 @@ blockquote:before, blockquote:after, q:before, q:after { content: ''; content: n
 table { border-collapse: collapse; border-spacing: 0; }
 
 /* ---------------------------------------------
-   Lancamento component layout & visual styles
-   (merged from previous .style.css and lançamento.component.css)
-   --------------------------------------------- */
+    Lancamento component layout & visual styles
+    --------------------------------------------- */
 .lancamento-root { display: block; padding: 16px 16px 40px; }
 
-.hero iframe { display: block; width: 100%; height: 420px; border-radius: 6px; border: none; }
+.hero iframe { 
+  display: block; 
+  width: 100%; 
+  height: 420px; /* Altura padrão para desktop */
+  border-radius: 6px; 
+  border: none; 
+}
 
-ul.modelcars { display: block; text-align: center; margin-bottom: 40px; }
+/* 🚗 Ajustes para a Lista de Carros - Usando Flexbox para Responsividade */
+ul.modelcars {
+  display: flex; 
+  flex-wrap: wrap; /* Permite que os itens quebrem linha */
+  justify-content: center; /* Centraliza os itens na horizontal */
+  margin-bottom: 40px;
+  padding: 0;
+}
 
-ul.modelcars li { display: inline-block; text-align: left; width: 300px; vertical-align: top; margin: 8px; }
+ul.modelcars li {
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  width: 100%; /* Largura total no mobile */
+  max-width: 320px; /* Limite de largura para desktop */
+  vertical-align: top;
+  margin: 16px 8px; 
+  padding: 10px;
+  border: 1px solid #eee; 
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  text-align: left;
+}
 
-/* image rules were slightly different between files - keep responsive approach */
-img.photocar { display: block; width: 100%; max-width: 250px; }
+img.photocar { 
+  width: 100%; 
+  max-width: 250px; 
+  height: auto; 
+  margin-bottom: 10px;
+}
 
 .checkbox { width: 30px; height: 30px; }
 
-.infocar { display: flex; align-items: center; gap: 10px; }
-.infocar div { display: inline-block; }
+.infocar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%; 
+  padding: 0 10px;
+  box-sizing: border-box;
+}
 
-.info { width: 200px; vertical-align: top; }
+.info { 
+  flex-grow: 1; /* Ocupa o espaço restante */
+  width: auto; 
+}
+
 .textmodel { display: block; font-size: 14px; color: #1351d8; text-align: left; }
 .textprice { display: block; font-size: 12px; color: #333; text-align: left; }
 
-/* Compare area - inline card centered under the car list */
+/* 📊 Ajustes para a Tabela de Comparação */
+.compare-table-container {
+  overflow-x: auto; /* PERMITE ROLAGEM HORIZONTAL NO MOBILE */
+  width: 100%;
+}
+
 .compare { display: block; margin: 16px auto 40px auto; text-align: left; }
 .compare-card {
   width: min(95%, 900px);
@@ -65,17 +109,44 @@ img.photocar { display: block; width: 100%; max-width: 250px; }
   box-shadow: 0 4px 10px rgba(0,0,0,0.12);
 }
 
-table { border-collapse: collapse; width: 100%; }
-th, td { padding: 8px; vertical-align: middle; text-align: left; }
+table { 
+  border-collapse: collapse; 
+  width: 100%;
+  min-width: 600px; /* Garante que a tabela não fique muito espremida */
+}
+th, td { 
+  padding: 8px; 
+  vertical-align: middle; 
+  text-align: left; 
+  white-space: nowrap; /* Impede quebra de linha em colunas, facilitando o scroll */
+}
 td:nth-child(1) { font-weight: 700; width: 35%; }
+.car-image-cell { text-align: center; } 
+.car-image-cell img { display: inline-block; }
 tr:nth-child(even) { background-color: #f2f2f2; }
 
-/* older file used a larger table with margins — keep responsive behavior */
-table.smallwide { width: 80%; margin: 2vh auto 10px; }
-
+/* 📱 Media Queries (Ajustes para Telas Menores) */
 @media (max-width: 768px) {
   .hero iframe { height: 260px; }
-  ul.modelcars li { width: 220px; }
+
+  /* Botões de controle em coluna */
+  .controls button {
+      width: 100%;
+      margin-bottom: 8px;
+  }
+
+  /* Botões da comparação lado a lado, mas ocupando o máximo de espaço */
+  .compare-card > div:last-child button {
+    width: 48% !important; /* Sobrescreve o estilo inline do HTML */
+    margin-right: 2% !important;
+  }
+}
+
+@media (min-width: 500px) {
+    /* Em telas maiores que 500px, os itens da lista podem ter uma largura maior */
+    ul.modelcars li {
+        width: 280px; 
+    }
 }
 
 /* small helper styles */
