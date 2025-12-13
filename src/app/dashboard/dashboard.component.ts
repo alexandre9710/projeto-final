@@ -1,151 +1,115 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Subscription, of } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map, switchMap } from 'rxjs/operators';
-import { RouterLink } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 import { DashboardService } from '../services/dashboard.service';
 import { Veiculo } from '../models/veiculo.model';
-import { VehicleData } from '../models/vehicleData.model';
 import { CarroVin } from '../utils/carroVinInterface';
 import { MenuComponent } from '../menu/menu.component';
 
 @Component({
   standalone: true,
   selector: 'app-dashboard',
-  imports: [CommonModule, ReactiveFormsModule, MenuComponent, RouterLink],
+  imports: [CommonModule, ReactiveFormsModule, MenuComponent],
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css'],
+  styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit, OnDestroy {
+
   vehicles: Veiculo[] = [];
-  selectedVehicle!: Veiculo;
-  vehicleData!: VehicleData;
 
-  carVin!: CarroVin | null;
-  private subs = new Subscription();
+  // ✅ Tipagem correta (pode ser null)
+  selectedVehicle: Veiculo | null = null;
+  carVin: CarroVin | null = null;
 
-  // MAPA VIN → IMAGEM (confirme caminhos em src/assets)
-  vinImages: Record<string, string> = {
-    '2FRHDUYS2Y63NHD22454': 'assets/ranger.png',
-    '2RFAASDY54E4HDU34874': 'assets/mustang.png',
-    '2FRHDUYS2Y63NHD22455': 'assets/territory.png',
-    '2RFAASDY54E4HDU34875': 'assets/bronco.png',
-  };
-
-  imgByVin: string | null = null;
+  subs: Subscription[] = [];
 
   selectCarForms = new FormGroup({
-    carId: new FormControl(''),
+    carId: new FormControl<string | null>(null),
   });
 
   vinForm = new FormGroup({
-    vin: new FormControl(''),
+    vin: new FormControl<string | null>(null),
   });
 
   constructor(private dashboardservice: DashboardService) {}
 
   ngOnInit(): void {
-    this.loadVehicles();
-    this.setupVehicleSelectionListener();
-    this.setupVinSearchListener();
-  }
 
-  private loadVehicles(): void {
-    // Carrega veículos
-    const vSub = this.dashboardservice.getVehicles().subscribe({
-      next: (res: any) => {
-        console.debug('getVehicles response', res);
-        let receivedVehicles: Veiculo[] = [];
+    /* ---------------- VEÍCULOS ---------------- */
+    const vehiclesSub = this.dashboardservice.getVehicles().subscribe(res => {
 
-        if (res && (res as any).vehicles) {
-          receivedVehicles = (res as any).vehicles as Veiculo[];
-        } else if (Array.isArray(res)) {
-          receivedVehicles = res as Veiculo[];
-        }
+      this.vehicles = (res as any)?.vehicles ?? res ?? [];
 
-        this.vehicles = receivedVehicles;
+      const activeId = this.dashboardservice.getVeiculoAtivoId();
 
-        if (this.vehicles.length > 0) {
-          this.selectedVehicle = this.vehicles[0];
-          this.selectCarForms.controls.carId.setValue(String(this.selectedVehicle.id));
-        }
-      },
-      error: (err) => console.error('Erro getVehicles', err),
-    });
-    this.subs.add(vSub);
-  }
+      this.selectedVehicle =
+        this.vehicles.find(v => Number(v.id) === Number(activeId))
+        ?? this.vehicles[0]
+        ?? null;
 
-  private setupVehicleSelectionListener(): void {
-    // Quando mudar select de veículo
-    const selSub = this.selectCarForms.controls.carId.valueChanges.subscribe((id) => {
-      if (!id) {
-        this.selectedVehicle = undefined as any;
-        return;
-      }
-      const found = this.vehicles.find((v) => String(v.id) === String(id));
-      if (found) {
-        this.selectedVehicle = found;
+      if (this.selectedVehicle) {
+        this.selectCarForms.patchValue(
+          { carId: String(this.selectedVehicle.id) },
+          { emitEvent: false }
+        );
       }
     });
-    this.subs.add(selSub);
-  }
+    this.subs.push(vehiclesSub);
 
-  private setupVinSearchListener(): void {
-    // Observa VIN com debounce para não chamar backend a cada tecla
-    const vinValueObs = this.vinForm.controls.vin.valueChanges.pipe(
-      map(v => (v || '').toString().trim()),
-      debounceTime(300),
-      distinctUntilChanged()
-    );
+    /* ---------------- SELECT ---------------- */
+    const selectSub = this.selectCarForms.controls.carId.valueChanges
+      .subscribe(id => {
 
-    const vinSub = vinValueObs.pipe(
-      switchMap((vin: string) => {
-        // 1. Limpa dados quando vin vazio
-        if (!vin) {
-          this.imgByVin = null;
+        if (!id) return;
+
+        const found = this.vehicles.find(
+          v => String(v.id) === String(id)
+        );
+
+        if (found) {
+          this.selectedVehicle = found;
+
+          // ✅ conversão correta
+          this.dashboardservice.setVeiculoAtivo(Number(found.id));
+        }
+      });
+    this.subs.push(selectSub);
+
+    /* ---------------- VIN ---------------- */
+    const vinSub = this.vinForm.controls.vin.valueChanges
+      .subscribe(vin => {
+
+        if (!vin || vin.length < 5) {
           this.carVin = null;
-          console.debug('VIN vazio — limpando imgByVin e carVin');
-          return of(null);
+          return;
         }
 
-        // 2. Define imagem local (se houver)
-        if (this.vinImages[vin]) {
-          this.imgByVin = this.vinImages[vin];
-          console.debug('Imagem pelo VIN encontrada localmente:', this.imgByVin);
-        } else {
-          this.imgByVin = null;
-          console.debug('VIN não mapeado localmente:', vin);
-        }
+        this.dashboardservice.buscarVin(vin).subscribe(res => {
+          this.carVin = res;
 
-        // 3. Chama o backend para dados do VIN
-        return this.dashboardservice.buscarVin(vin);
-      })
-    ).subscribe({
-      next: (res: any) => {
-        if (res) {
-          this.carVin = res as CarroVin;
-          console.debug('buscarVin result:', res);
-        }
-        // Se res for null, é porque o switchMap retornou of(null)
-      },
-      error: (err) => {
-        console.error('Erro ao buscar VIN:', err);
-        this.carVin = null;
-      }
-    });
+          const found = this.vehicles.find(
+            v => String(v.id) === String(res.id)
+          );
 
-    this.subs.add(vinSub);
-  }
+          if (found) {
+            this.selectedVehicle = found;
 
-  onImgError(event: Event): void {
-    // se imagem falhar em carregar (404), zera imgByVin para não mostrar broken image
-    console.warn('Erro ao carregar imagem', event);
-    this.imgByVin = null;
+            this.selectCarForms.patchValue(
+              { carId: String(found.id) },
+              { emitEvent: false }
+            );
+
+            // ✅ conversão correta
+            this.dashboardservice.setVeiculoAtivo(Number(found.id));
+          }
+        });
+      });
+    this.subs.push(vinSub);
   }
 
   ngOnDestroy(): void {
-    this.subs.unsubscribe();
+    this.subs.forEach(sub => sub.unsubscribe());
   }
 }

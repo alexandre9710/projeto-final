@@ -1,19 +1,29 @@
 <app-menu></app-menu>
 
-<div class="dashboard-container">
+<div class="dashboard-container container-fluid">
 
-  <h2 class="text-primary fw-bold text-center my-4">Dashboard FORD</h2>
+  <h2 class="text-primary fw-bold text-center my-4">
+    Dashboard FORD
+  </h2>
 
-  <div class="container text-center">
-    <div class="row justify-content-center mb-4">
+  <div class="container">
+    <div class="row g-3 justify-content-center">
 
-      <div class="col-md-3 mb-3">
-        <div class="card shadow-sm">
-          <div class="card-header fw-bold text-primary">Veículo</div>
+      <!-- VEÍCULO -->
+      <div class="col-12 col-sm-6 col-lg-3">
+        <div class="card shadow-sm h-100">
+          <div class="card-header fw-bold text-primary text-center">
+            Veículo
+          </div>
           <div class="card-body">
             <form [formGroup]="selectCarForms">
-              <select class="form-select my-2" formControlName="carId">
-                <option *ngFor="let vehicle of vehicles" [value]="vehicle.id">
+              <select class="form-select" formControlName="carId">
+                <option [ngValue]="null" disabled>
+                  Selecione um Veículo
+                </option>
+                <option
+                  *ngFor="let vehicle of vehicles"
+                  [value]="vehicle.id">
                   {{ vehicle.vehicle }}
                 </option>
               </select>
@@ -22,57 +32,66 @@
         </div>
       </div>
 
-      <div class="col-md-3 mb-3">
-        <div class="card text-center shadow-sm">
-          <div class="card-header fw-bold text-primary">Total de Vendas</div>
+      <!-- TOTAL -->
+      <div class="col-12 col-sm-6 col-lg-3">
+        <div class="card shadow-sm h-100 text-center">
+          <div class="card-header fw-bold text-primary">
+            Total de Vendas
+          </div>
           <div class="card-body">
-            <h5 class="card-title">{{ selectedVehicle ? selectedVehicle.volumetotal : '000' }}</h5>
-            <p class="card-text text-primary">Unid.</p>
+            <h5>{{ selectedVehicle?.volumetotal ?? '000' }}</h5>
+            <p class="text-primary">Unid.</p>
           </div>
         </div>
       </div>
 
-      <div class="col-md-3 mb-3">
-        <div class="card text-center shadow-sm">
-          <div class="card-header fw-bold text-primary">Conectados</div>
+      <!-- CONECTADOS -->
+      <div class="col-12 col-sm-6 col-lg-3">
+        <div class="card shadow-sm h-100 text-center">
+          <div class="card-header fw-bold text-primary">
+            Conectados
+          </div>
           <div class="card-body">
-            <h5 class="card-title">{{ selectedVehicle ? selectedVehicle.connected : '000' }}</h5>
-            <p class="card-text text-primary">Unid.</p>
+            <h5>{{ selectedVehicle?.connected ?? '000' }}</h5>
+            <p class="text-primary">Unid.</p>
           </div>
         </div>
       </div>
 
-      <div class="col-md-3 mb-3">
-        <div class="card text-center shadow-sm">
-          <div class="card-header fw-bold text-primary">Update Software</div>
+      <!-- SOFTWARE -->
+      <div class="col-12 col-sm-6 col-lg-3">
+        <div class="card shadow-sm h-100 text-center">
+          <div class="card-header fw-bold text-primary">
+            Update Software
+          </div>
           <div class="card-body">
-            <h5 class="card-title">{{ selectedVehicle ? selectedVehicle.softwareUpdates : '000' }}</h5>
-            <p class="card-text text-primary">Unid.</p>
+            <h5>{{ selectedVehicle?.softwareUpdates ?? '000' }}</h5>
+            <p class="text-primary">Unid.</p>
           </div>
         </div>
       </div>
 
     </div>
 
-    <div class="text-center mb-4">
+    <!-- IMAGEM (CORREÇÃO DEFINITIVA DO ERRO NG1) -->
+    <div class="text-center my-4" *ngIf="selectedVehicle as vehicle">
       <img
-        *ngIf="(imgByVin || selectedVehicle?.img)"
-        [src]="imgByVin ? imgByVin : selectedVehicle?.img"
-        [alt]="imgByVin ? 'Imagem pelo VIN' : 'Imagem do veículo selecionado'"
-        class="img-fluid rounded shadow"
-        style="max-width: 450px"
-        (error)="onImgError($event)"
+        [src]="vehicle.img"
+        alt="Imagem do veículo"
+        class="img-fluid vehicle-img shadow"
       />
     </div>
+
   </div>
 
-  <div class="container-fluid p-0">
-    <table class="table table-bordered table-primary m-0 text-center align-middle">
+  <!-- TABELA -->
+  <div class="table-responsive px-2 mb-5">
+    <table class="table table-bordered table-primary text-center align-middle">
       <thead class="table-dark">
         <tr>
-          <th>Código - VIN</th>
+          <th>VIN</th>
           <th>Odômetro</th>
-          <th>Nível de Combustível</th>
+          <th>Combustível</th>
           <th>Status</th>
           <th>Lat</th>
           <th>Long</th>
@@ -80,23 +99,24 @@
       </thead>
       <tbody>
         <tr>
-          <td style="width: 25%">
+          <td>
             <form [formGroup]="vinForm">
               <input
                 class="form-control border border-primary text-center"
                 type="text"
-                [formControl]="vinForm.controls.vin"
+                formControlName="vin"
                 placeholder="Digite o VIN"
               />
             </form>
           </td>
-          <td>{{ carVin ? carVin.odometro : '-' }}</td>
-          <td>{{ carVin ? carVin.nivelCombustivel : '-' }}</td>
-          <td>{{ carVin ? carVin.status : '-' }}</td>
-          <td>{{ carVin ? carVin.lat : '-' }}</td>
-          <td>{{ carVin ? carVin.long : '-' }}</td>
+          <td>{{ carVin?.odometro ?? '-' }}</td>
+          <td>{{ carVin?.nivelCombustivel ?? '-' }}</td>
+          <td>{{ carVin?.status ?? '-' }}</td>
+          <td>{{ carVin?.lat ?? '-' }}</td>
+          <td>{{ carVin?.long ?? '-' }}</td>
         </tr>
       </tbody>
     </table>
   </div>
+
 </div>
